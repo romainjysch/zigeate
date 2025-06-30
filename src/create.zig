@@ -32,12 +32,9 @@ fn createAllFile(allocator: std.mem.Allocator, project_name: []const u8) !void {
 
 fn createMainFile(allocator: std.mem.Allocator, project_name: []const u8) !void {
     const src_path = try fs.path.join(allocator, &[_][]const u8{project_name, "src"});
-    defer allocator.free(src_path);
     try fs.cwd().makeDir(src_path);
 
     const main_path = try fs.path.join(allocator, &[_][]const u8{project_name, "src/main.zig"});
-    defer allocator.free(main_path);
-
     const main_file = try fs.cwd().createFile(main_path, .{});
     defer main_file.close();
     try main_file.writeAll(templates.MAIN_FILE_CONTENT);
@@ -45,32 +42,22 @@ fn createMainFile(allocator: std.mem.Allocator, project_name: []const u8) !void 
 
 fn createBuildFile(allocator: std.mem.Allocator, project_name: []const u8) !void {
     const build_path = try fs.path.join(allocator, &[_][]const u8{project_name, "build.zig"});
-    defer allocator.free(build_path);
-
-    const build_content = try std.fmt.allocPrint(allocator, templates.BUILD_TEMPLATE, .{project_name});
-    defer allocator.free(build_content);
-
     const build_file = try fs.cwd().createFile(build_path, .{});
     defer build_file.close();
+    const build_content = try std.fmt.allocPrint(allocator, templates.BUILD_TEMPLATE, .{project_name});
     try build_file.writeAll(build_content);
 }
 
 fn createReadme(allocator: std.mem.Allocator, project_name: []const u8) !void {
     const readme_path = try fs.path.join(allocator, &[_][]const u8{ project_name, "README.md" });
-    defer allocator.free(readme_path);
-
-    const readme_content = try std.fmt.allocPrint(allocator, templates.README_TEMPLATE, .{project_name});
-    defer allocator.free(readme_content);
-
     const readme_file = try fs.cwd().createFile(readme_path, .{});
     defer readme_file.close();
+    const readme_content = try std.fmt.allocPrint(allocator, templates.README_TEMPLATE, .{project_name});
     try readme_file.writeAll(readme_content);
 }
 
 fn createGitIgnore(allocator: std.mem.Allocator, project_name: []const u8) !void {
     const gitignore_path = try fs.path.join(allocator, &[_][]const u8{project_name, ".gitignore" });
-    defer allocator.free(gitignore_path);
-
     const gitignore_file = try fs.cwd().createFile(gitignore_path, .{});
     defer gitignore_file.close();
     try gitignore_file.writeAll(templates.GITIGNORE_CONTENT);
