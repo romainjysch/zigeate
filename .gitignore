@@ -1,2 +1,7 @@
-/.zig-cache
-/.zig-out
+/.zig-cache/
+/.zig-out/
+
+.idea/
+.vscode/
+
+.DS_Store

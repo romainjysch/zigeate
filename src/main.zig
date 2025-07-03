@@ -1,4 +1,4 @@
-const std    = @import("std");
+const std = @import("std");
 const create = @import("create.zig");
 
 pub fn main() !void {

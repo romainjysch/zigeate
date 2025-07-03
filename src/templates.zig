@@ -75,6 +75,10 @@ pub const BUILD_TEMPLATE =
 pub const GITIGNORE_CONTENT =
     \\zig-cache/
     \\zig-out/
+    \\
+    \\.idea/
+    \\.vscode/
+    \\
     \\.DS_Store
     \\
 ;

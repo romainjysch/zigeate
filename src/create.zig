@@ -1,7 +1,7 @@
-const std       = @import("std");
+const std = @import("std");
 const templates = @import("templates.zig");
-const fs        = std.fs;
-const mem       = std.mem;
+const fs = std.fs;
+const mem = std.mem;
 
 pub fn run(allocator: std.mem.Allocator, project_name: []const u8) !void {
     var dir = fs.cwd().openDir(project_name, .{}) catch |err| {
@@ -31,17 +31,17 @@ fn createAllFile(allocator: std.mem.Allocator, project_name: []const u8) !void {
 }
 
 fn createMainFile(allocator: std.mem.Allocator, project_name: []const u8) !void {
-    const src_path = try fs.path.join(allocator, &[_][]const u8{project_name, "src"});
+    const src_path = try fs.path.join(allocator, &[_][]const u8{ project_name, "src" });
     try fs.cwd().makeDir(src_path);
 
-    const main_path = try fs.path.join(allocator, &[_][]const u8{project_name, "src/main.zig"});
+    const main_path = try fs.path.join(allocator, &[_][]const u8{ project_name, "src/main.zig" });
     const main_file = try fs.cwd().createFile(main_path, .{});
     defer main_file.close();
     try main_file.writeAll(templates.MAIN_FILE_CONTENT);
 }
 
 fn createBuildFile(allocator: std.mem.Allocator, project_name: []const u8) !void {
-    const build_path = try fs.path.join(allocator, &[_][]const u8{project_name, "build.zig"});
+    const build_path = try fs.path.join(allocator, &[_][]const u8{ project_name, "build.zig" });
     const build_file = try fs.cwd().createFile(build_path, .{});
     defer build_file.close();
     const build_content = try std.fmt.allocPrint(allocator, templates.BUILD_TEMPLATE, .{project_name});
@@ -57,7 +57,7 @@ fn createReadme(allocator: std.mem.Allocator, project_name: []const u8) !void {
 }
 
 fn createGitIgnore(allocator: std.mem.Allocator, project_name: []const u8) !void {
-    const gitignore_path = try fs.path.join(allocator, &[_][]const u8{project_name, ".gitignore" });
+    const gitignore_path = try fs.path.join(allocator, &[_][]const u8{ project_name, ".gitignore" });
     const gitignore_file = try fs.cwd().createFile(gitignore_path, .{});
     defer gitignore_file.close();
     try gitignore_file.writeAll(templates.GITIGNORE_CONTENT);
